@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include<stdlib.h>
+#define max 20
+int F(char symbol)
+{
+    switch(symbol)
+    {
+        case'+':
+        case'-':return 2;
+        case'*':
+        case'/':return 4;
+        case'$':
+        case'^':return 5;
+        case'(':return 0;
+        case'#':return -1;
+        default:return 8;
+    }
+}
+int G(char symbol)
+{
+    switch(symbol)
+    {
+        case'+':
+        case'-':return 1;
+        case'*':case'/':return 3;
+        case'$':case'^':return 6;
+        case'(':return 9;
+        case')':return 0;
+
+        default:return 7;
+    }
+}
+void push(char s[max],int *top,char symbol)
+        {
+
+            (*top)++;
+            s[*top]=symbol;
+        }
+        int pop(char s[max],int *top)
+        {
+
+            char symbol;
+            symbol=s[*top];
+            (*top)--;
+            return symbol;
+
+
+        }
+void conv(char infix[20],char postfix[20])
+    {
+        int top=-1,i=0,j=0;
+        char s[max],symbol;
+        push(s,&top,'#');
+
+          while(infix[i]!='\0')
+            {
+                symbol=infix[i];
+                while(F(s[top])>G(symbol))
+                {
+                    postfix[j]=pop(s,&top);
+                    j++;
+                }
+
+                if(F(s[top])!=G(symbol))
+                push(s,&top,symbol);
+                else
+                pop(s,&top);
+                i++;
+            }
+
+            while(top!=0)
+            {
+                postfix[j]=pop(s,&top);
+                j++;
+            }
+            postfix[j]='\0';
+        }
+
+
+        
+        int main()
+        {
+            char infix[20],postfix[20];
+            printf("enter infix exp");
+            scanf("%s",infix);
+            conv(infix,postfix);
+            printf("pot fix exp=%s",postfix);
+        }
