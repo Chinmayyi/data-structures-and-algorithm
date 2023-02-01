@@ -1,0 +1,67 @@
+#include<stdio.h>
+typedef struct sparse
+{
+    int r,c,v;
+    
+}s;
+
+void accept(s a[100],int *n,int *m)
+{
+     printf("enter row and column");
+    scanf("%d%d",n,m);
+    int k=1,i,j,ele;
+    for(i=0;i<*n;i++)
+    {
+    for(j=0;j<*m;j++)
+    {
+    printf("enter element in row %d,colum %d",i,j);
+    scanf("%d",&ele);
+    
+    if(ele!=0){
+        a[k].r=i;
+        a[k].c=j;
+        a[k].v=ele;
+        k++;
+    }
+    }
+    }
+     a[0].v=k-1;
+    a[0].r=*n;
+    a[0].c=*m;
+   
+
+
+}
+    void display(s a[100],int n,int m)
+    {
+        int k=1,i,j;
+        
+        for(i=0;i<n;i++)
+        {
+            for(j=0;j<m;j++)
+            
+            {
+                if(a[k].r==i&&a[k].c==j)
+                
+                    printf("%d\t",a[k++].v);
+                    
+                
+                else 
+                printf("0");
+        }
+                printf("\n");
+        }
+    }
+        
+        
+    int main(){
+    s a[100];
+    int n,m;
+   
+    accept(a,&n,&m);
+    display(a,n,m);
+    return 0;
+}
+
+
+
