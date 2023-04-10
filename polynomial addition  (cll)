@@ -1,0 +1,122 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+
+struct poly {
+    int cf,px,py,pz;
+    struct poly *link;
+};
+typedef struct poly *p;
+
+p getnode() {
+    p temp;
+    temp=(p)malloc(sizeof(struct poly));
+    return temp;
+}
+
+void read_poly(p p1,int n){
+    p temp,next;
+    int i;
+    for(i=0;i<n;i++){
+        temp=getnode();
+        printf("enter the cf,px,py,pz: ");
+        scanf("%d%d%d%d",&(temp->cf),&(temp->px),&(temp->py),&(temp->pz));
+        next=p1->link;
+        p1->link=temp;
+        temp->link=next;
+    }
+}
+
+p compare(p term,p p2){
+    p cur;
+    cur=p2->link;
+    while(cur!=p2){
+        if(cur->px==term->px&&cur->py==term->py&&cur->pz==term->pz)
+        return cur;
+        cur=cur->link;
+    }
+    return NULL;
+}
+
+void insert(p p3,int cf,int px,int py,int pz){
+    p temp,next;
+    temp=getnode();
+    temp->cf=cf;
+    temp->px=px;
+    temp->py=py;
+    temp->pz=pz;
+    next=p3->link;
+    p3->link=temp;
+    temp->link=next;
+}
+
+void add_poly(p p1,p p2,p p3){
+    p cur,res_pos;
+    cur=p1->link;
+    while(cur!=p1){
+        res_pos=compare(cur,p2);
+        if(res_pos!=NULL){
+            insert(p3,cur->cf+res_pos->cf,cur->px,cur->py,cur->pz);
+        }
+        else{
+            insert(p3,cur->cf,cur->px,cur->py,cur->pz);
+        }
+        cur=cur->link;
+    }
+    cur=p2->link;
+    while(cur!=p2){
+        if(compare(cur,p1)==NULL){
+            insert(p3,cur->cf,cur->px,cur->py,cur->pz);
+        }
+        cur=cur->link;
+    }
+}
+
+
+
+
+void display(p head){
+    p cur;
+    if(head->link==head){
+        printf("no elements");
+        return;
+    }
+    printf("elements of polynomial: ");
+    cur=head->link;
+    while(cur!=head){
+        if(cur->cf>=0){
+            printf("+%dx^%dy^%dz^%d",cur->cf,cur->px,cur->py,cur->pz);
+        }
+        else{
+            printf("%dx^%dy^%dz^%d",cur->cf,cur->px,cur->py,cur->pz);
+        }
+        cur=cur->link;
+    }
+    printf("\n");
+}
+    
+   
+int main()
+{
+    p p1,p2,p3,term;
+    int n,m;
+    p1=getnode();
+    p1->link=p1;
+    p2=getnode();
+    p2->link=p2;
+    printf("enter number of terms in p1: ");
+    scanf("%d",&n);
+    read_poly(p1,n);
+    display(p1);
+    printf("enter number of terms in p2: ");
+    scanf("%d",&m);
+    read_poly(p2,m);
+    display(p2);
+    p3=getnode();
+    p3->link=p3;
+    add_poly(p1,p2,p3);
+    printf("resultant poly: ");
+    display(p3);
+   // printf("evaluation of p3: %d\n", evaluate(p3));
+    return 0;
+}
