@@ -1,0 +1,15 @@
+ ListNode* cur=head->next->next;
+        ListNode *prev=head;
+        head=prev->next;
+        head->next=prev;
+        while(cur!=NULL&&cur->next!=NULL){
+          prev->next=cur->next;
+          prev=cur;
+          ListNODE *temp=cur->next->next;
+          cur->next->next=cur;
+           cur=temp;
+           }
+           prev->next=cur;
+           return head;
+    }
+};
